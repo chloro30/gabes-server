@@ -1,0 +1,7 @@
+{
+    "host": "customer-manage.c8sjifjmwwdf.ap-northeast-2.rds.amazonaws.com",
+    "user": "admin",
+    "password": "1q2w3e4r",
+    "port": "3306",
+    "database": "gabesdb"
+}

@@ -2,6 +2,11 @@
 
 설치
 npm init
-npm install nodemon
+
 npm install express 
+
 npm install cors
+
+npm install nodemon
+
+npm install --save mysql
