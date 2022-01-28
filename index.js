@@ -22,16 +22,16 @@ const connection = mysql.createConnection({
 app.use(express.json());  //json 형식의 데이터를 처리할 수 있게 설정하는 코드
 app.use(cors());  //브라우저의 CORS 이슈를 막기 위해 사용하는 코드
 
-// 서울 시간대 설정
-const SeoulDate = new Date().toLocaleString('ko-KR', {
-    timeZone: 'Asia/Seoul'
-});
-console.log(SeoulDate);
+
 
 
 
 //커피 전체 조회 - GET
 app.get('/coffee', async (req, res) => {
+    const SeoulDate = new Date().toLocaleString('ko-KR', {
+        timeZone: 'Asia/Seoul'
+    });
+    console.log(`메뉴 클릭 시간: ${SeoulDate}`);
     connection.query(
         "SELECT * FROM coffee",
         (err, rows, fields) => {
@@ -42,6 +42,10 @@ app.get('/coffee', async (req, res) => {
 
 //공지사항 전체 조회 - GET
 app.get('/notice', async (req, res) => {
+    const SeoulDate = new Date().toLocaleString('ko-KR', {
+        timeZone: 'Asia/Seoul'
+    });
+    console.log(`공지사항 클릭 시간: ${SeoulDate}`);
     connection.query(
         `SELECT * FROM notice
          
@@ -79,5 +83,10 @@ app.post("/event/upload", async (req, res) => {
 ////////////////////////////////////////////////////////////////////////////
 //세팅한 app을 실행시킨다.
 app.listen(port, () => {
-    console.log('서버가 돌아가고 있습니다.');
+    
+    // 서울 시간대 사용하려면 다음과 같이 생성해서 사용
+    const SeoulDate = new Date().toLocaleString('ko-KR', {
+        timeZone: 'Asia/Seoul'
+    });
+    console.log(`서버가 돌아가고 있습니다. (${SeoulDate})`);
 });
