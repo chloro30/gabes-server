@@ -31,7 +31,7 @@ app.get('/coffee', async (req, res) => {
     const SeoulDate = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul'
     });
-    console.log(`메뉴 클릭 시간: ${SeoulDate}`);
+    console.log(`메뉴 클릭 시각: ${SeoulDate}`);
     connection.query(
         "SELECT * FROM coffee",
         (err, rows, fields) => {
@@ -45,7 +45,7 @@ app.get('/notice', async (req, res) => {
     const SeoulDate = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul'
     });
-    console.log(`공지사항 클릭 시간: ${SeoulDate}`);
+    console.log(`공지사항 클릭 시각: ${SeoulDate}`);
     connection.query(
         `SELECT * FROM notice
          
@@ -59,8 +59,62 @@ app.get('/notice', async (req, res) => {
 
 //공지사항 등록 - POST
 app.post("/notice/upload", async (req, res) => {
-    res.send('공지사항이 등록되었습니다.')
+    connection.query(
+        `
+        INSERT INTO notice (title, writer, date)
+        VALUES ('테스트','관리자','2022-05-05')
+        `,
+        (err, result, fields) => {
+            res.send(result);
+        }
+    );
+        
+    const SeoulDate = new Date().toLocaleString('ko-KR', {
+        timeZone: 'Asia/Seoul'
+    });
+    console.log(`공지사항 등록 시각: ${SeoulDate}`);
 });
+
+
+//공지사항 수정 - PUT
+app.put("/notice/update", async (req, res) => {
+    connection.query(
+        `
+        UPDATE notice
+        SET title = '제목 수정'
+        WHERE no = 26
+        `,
+        (err, result, fields) => {
+            res.send(result);
+        }
+    );
+        
+    const SeoulDate = new Date().toLocaleString('ko-KR', {
+        timeZone: 'Asia/Seoul'
+    });
+    console.log(`공지사항 수정 시각: ${SeoulDate}`);
+});
+
+//공지사항 삭제 - DELETE
+app.delete("/notice/delete", async (req, res) => {
+    connection.query(
+        `
+        DELETE FROM notice
+        WHERE no = 24
+        `,
+        (err, result, fields) => {
+            res.send(result);
+        }
+    );
+        
+    const SeoulDate = new Date().toLocaleString('ko-KR', {
+        timeZone: 'Asia/Seoul'
+    });
+    console.log(`공지사항 삭제 시각: ${SeoulDate}`);
+});
+
+
+
 
 //이벤트 전체 조회 - GET
 app.get('/event', async (req, res) => {
