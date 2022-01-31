@@ -27,7 +27,7 @@ app.use(cors());  //브라우저의 CORS 이슈를 막기 위해 사용하는 �
 
 
 //커피 전체 조회 - GET
-app.get('/coffee', async (req, res) => {
+app.get('/menu/coffee', async (req, res) => {
     const SeoulDate = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul'
     });
@@ -41,7 +41,7 @@ app.get('/coffee', async (req, res) => {
 });
 
 //공지사항 전체 조회 - GET
-app.get('/notice', async (req, res) => {
+app.get('/board/notice', async (req, res) => {
     const SeoulDate = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul'
     });
@@ -58,26 +58,32 @@ app.get('/notice', async (req, res) => {
 
 
 //공지사항 등록 - POST
-app.post("/notice/upload", async (req, res) => {
+app.post("/board/notice/upload", async (req, res) => {
+
+    const request = req.body;
+    console.log(request);
+    
+    const {title, desc, writer, date} = req.body;
+
+
     connection.query(
         `
-        INSERT INTO notice (title, writer, date)
-        VALUES ('테스트','관리자','2022-05-05')
+        INSERT INTO notice (title, description, writer, date)
+        VALUES (?,?,?,?)
         `,
+        [title, desc, writer, date],
         (err, result, fields) => {
+            console.log(err);
             res.send(result);
         }
     );
         
-    const SeoulDate = new Date().toLocaleString('ko-KR', {
-        timeZone: 'Asia/Seoul'
-    });
-    console.log(`공지사항 등록 시각: ${SeoulDate}`);
+    console.log(`공지사항 등록 시각: ${date}`);
 });
 
 
 //공지사항 수정 - PUT
-app.put("/notice/update", async (req, res) => {
+app.put("/board/notice/update", async (req, res) => {
     connection.query(
         `
         UPDATE notice
@@ -96,11 +102,11 @@ app.put("/notice/update", async (req, res) => {
 });
 
 //공지사항 삭제 - DELETE
-app.delete("/notice/delete", async (req, res) => {
+app.delete("/board/notice/delete", async (req, res) => {
     connection.query(
         `
         DELETE FROM notice
-        WHERE no = 24
+        WHERE no = 19
         `,
         (err, result, fields) => {
             res.send(result);
@@ -117,7 +123,7 @@ app.delete("/notice/delete", async (req, res) => {
 
 
 //이벤트 전체 조회 - GET
-app.get('/event', async (req, res) => {
+app.get('/board/event', async (req, res) => {
     connection.query(
         "SELECT * FROM event",
         (err, rows, fields) => {
@@ -127,7 +133,7 @@ app.get('/event', async (req, res) => {
 });
 
 //이벤트 등록 - POST
-app.post("/event/upload", async (req, res) => {
+app.post("/board/event/upload", async (req, res) => {
     res.send('공지사항이 등록되었습니다.')
 });
 
