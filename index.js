@@ -31,7 +31,7 @@ app.get('/menu/coffee', async (req, res) => {
     const SeoulDate = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul'
     });
-    console.log(`coffee 조회 클릭: ${SeoulDate}`);
+    console.log(`coffee 조회: ${SeoulDate}`);
 
     connection.query(
         "SELECT * FROM coffee",
@@ -46,7 +46,7 @@ app.get('/menu/desert', async (req, res) => {
     const SeoulDate = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul'
     });
-    console.log(`desert 조회 클릭: ${SeoulDate}`);
+    console.log(`desert 조회: ${SeoulDate}`);
 
     connection.query(
         "SELECT * FROM desert",
@@ -65,7 +65,7 @@ app.get('/board/notice', async (req, res) => {
     const SeoulDate = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul'
     });
-    console.log(`공지사항 전체 조회 클릭 시각: ${SeoulDate}`);
+    console.log(`공지사항 전체 조회: ${SeoulDate}`);
     connection.query(
         `
         SELECT * FROM notice
@@ -82,7 +82,7 @@ app.get('/board/notice/:no', async (req, res) => {
     const SeoulDate = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul'
     });
-    console.log(`공지사항 상세 조회 클릭: ${SeoulDate}`);
+    console.log(`공지사항 상세 조회: ${SeoulDate}`);
     
     const {no} = req.params;
     console.log(`글 번호: ${no}`);
@@ -98,27 +98,27 @@ app.get('/board/notice/:no', async (req, res) => {
     );
 });
     
-    //공지사항 10개만 조회 - GET
-    app.get('/board/notice/limit/:count', async (req, res) => {
-        const {count} = req.params;
-        // console.log(count);
-        // console.log(req.params);
-    
-        const startNum = (10*(count-1));
-        console.log(startNum);
-    
-        // LIMIT 의 두번째 인자와 client의 limit 변수가 일치 해야한다.
-        connection.query(
-            `
-            SELECT * FROM notice
-            ORDER BY no DESC
-            LIMIT ${startNum}, 10
-            `,
-            (err, rows, fields) => {
-                res.send(rows);
-            }
-        );
-    });
+//공지사항 10개만 조회 - GET
+app.get('/board/notice/limit/:count', async (req, res) => {
+    const {count} = req.params;
+    // console.log(count);
+    // console.log(req.params);
+
+    const startNum = (10*(count-1));
+    console.log(startNum);
+
+    // LIMIT 의 두번째 인자와 client의 limit 변수가 일치 해야한다.
+    connection.query(
+        `
+        SELECT * FROM notice
+        ORDER BY no DESC
+        LIMIT ${startNum}, 10
+        `,
+        (err, rows, fields) => {
+            res.send(rows);
+        }
+    );
+});
 
 
 //공지사항 등록 - POST
@@ -196,6 +196,10 @@ app.delete("/board/notice/delete/:no", async (req, res) => {
     });
     console.log(`공지사항 삭제: ${SeoulDate}`);
 });
+
+
+
+
 
 
 
