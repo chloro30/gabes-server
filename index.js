@@ -31,7 +31,8 @@ app.get('/menu/coffee', async (req, res) => {
     const SeoulDate = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul'
     });
-    console.log(`메뉴 클릭 시각: ${SeoulDate}`);
+    console.log(`coffee 조회 클릭: ${SeoulDate}`);
+
     connection.query(
         "SELECT * FROM coffee",
         (err, rows, fields) => {
@@ -40,15 +41,34 @@ app.get('/menu/coffee', async (req, res) => {
     );
 });
 
+//디저트 전체 조회 - GET
+app.get('/menu/desert', async (req, res) => {
+    const SeoulDate = new Date().toLocaleString('ko-KR', {
+        timeZone: 'Asia/Seoul'
+    });
+    console.log(`desert 조회 클릭: ${SeoulDate}`);
+
+    connection.query(
+        "SELECT * FROM desert",
+        (err, rows, fields) => {
+            res.send(rows);
+        }
+    );
+});
+
+
+
+
+
 //공지사항 전체 조회 - GET
 app.get('/board/notice', async (req, res) => {
     const SeoulDate = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul'
     });
-    console.log(`공지사항 클릭 시각: ${SeoulDate}`);
+    console.log(`공지사항 전체 조회 클릭 시각: ${SeoulDate}`);
     connection.query(
-        `SELECT * FROM notice
-         
+        `
+        SELECT * FROM notice
         `,
         (err, rows, fields) => {
             res.send(rows);
@@ -57,14 +77,57 @@ app.get('/board/notice', async (req, res) => {
 });
 
 
+//공지사항 상세 조회 - GET
+app.get('/board/notice/:no', async (req, res) => {
+    const SeoulDate = new Date().toLocaleString('ko-KR', {
+        timeZone: 'Asia/Seoul'
+    });
+    console.log(`공지사항 상세 조회 클릭: ${SeoulDate}`);
+    
+    const {no} = req.params;
+    console.log(`글 번호: ${no}`);
+    
+    connection.query(
+        `
+        SELECT * FROM notice
+        WHERE no = ${no}
+        `,
+        (err, rows, fields) => {
+            res.send(rows);
+        }
+    );
+});
+    
+    //공지사항 10개만 조회 - GET
+    app.get('/board/notice/limit/:count', async (req, res) => {
+        const {count} = req.params;
+        // console.log(count);
+        // console.log(req.params);
+    
+        const startNum = (10*(count-1));
+        console.log(startNum);
+    
+        // LIMIT 의 두번째 인자와 client의 limit 변수가 일치 해야한다.
+        connection.query(
+            `
+            SELECT * FROM notice
+            ORDER BY no DESC
+            LIMIT ${startNum}, 10
+            `,
+            (err, rows, fields) => {
+                res.send(rows);
+            }
+        );
+    });
+
+
 //공지사항 등록 - POST
 app.post("/board/notice/upload", async (req, res) => {
 
-    const request = req.body;
-    console.log(request);
-    
-    const {title, desc, writer, date} = req.body;
+    // const request = req.body;
+    // console.log(request);
 
+    const {title, desc, writer, date} = req.body;
 
     connection.query(
         `
@@ -78,35 +141,50 @@ app.post("/board/notice/upload", async (req, res) => {
         }
     );
         
-    console.log(`공지사항 등록 시각: ${date}`);
+    console.log(`공지사항 등록: ${date}`);
 });
 
 
 //공지사항 수정 - PUT
-app.put("/board/notice/update", async (req, res) => {
+app.put("/board/notice/update/:no", async (req, res) => {
+
+    const {no} = req.params;
+    // console.log(`수정수정수정: ${no}`);
+
+    const {title, desc} = req.body;
+
+    console.log(no, title, desc);
+
     connection.query(
         `
         UPDATE notice
-        SET title = '제목 수정'
-        WHERE no = 26
+        SET title = ?,
+            description = ?
+        WHERE no = ?
         `,
+        [title, desc, no],
         (err, result, fields) => {
             res.send(result);
+            // res.send('1');
         }
     );
         
     const SeoulDate = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul'
     });
-    console.log(`공지사항 수정 시각: ${SeoulDate}`);
+    console.log(`공지사항 수정: ${SeoulDate}`);
 });
 
 //공지사항 삭제 - DELETE
-app.delete("/board/notice/delete", async (req, res) => {
+app.delete("/board/notice/delete/:no", async (req, res) => {
+
+    const {no} = req.params;
+    console.log(no);
+
     connection.query(
         `
         DELETE FROM notice
-        WHERE no = 19
+        WHERE no = ${no}
         `,
         (err, result, fields) => {
             res.send(result);
@@ -116,7 +194,7 @@ app.delete("/board/notice/delete", async (req, res) => {
     const SeoulDate = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul'
     });
-    console.log(`공지사항 삭제 시각: ${SeoulDate}`);
+    console.log(`공지사항 삭제: ${SeoulDate}`);
 });
 
 
