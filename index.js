@@ -24,6 +24,31 @@ app.use(cors());  //브라우저의 CORS 이슈를 막기 위해 사용하는 �
 
 
 
+//회원 등록 - POST
+app.post("/member/register", async (req, res) => {
+
+    // const request = req.body;
+    // console.log(request);
+
+    const {m_id, m_password, m_name, m_phone, m_birthday, m_gender, m_address} = req.body;
+
+    connection.query(
+        `
+        INSERT INTO member (id, pwd, name, phone, birthday, gender, address, register_date)
+        VALUES (?,?,?,?,?,?,?, DATE_ADD(NOW(), INTERVAL 9 HOUR))
+        `,
+        [m_id, m_password, m_name, m_phone, m_birthday, m_gender, m_address],
+        (err, result, fields) => {
+            if(err){
+                console.log(`에러 : ${err}`);
+            }
+            res.send(result);
+        }
+    );
+});
+
+
+
 
 
 //커피 전체 조회 - GET
@@ -55,8 +80,6 @@ app.get('/menu/desert', async (req, res) => {
         }
     );
 });
-
-
 
 
 
