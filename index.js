@@ -71,10 +71,6 @@ app.post("/login/:id/:pwd", async (req, res) => {
 });
 
 
-
-
-
-
 //커피 전체 조회 - GET
 app.get('/menu/coffee', async (req, res) => {
     const SeoulDate = new Date().toLocaleString('ko-KR', {
