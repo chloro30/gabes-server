@@ -46,6 +46,30 @@ app.post("/member/register", async (req, res) => {
         }
     );
 });
+//(로그인)회원 조회 - POST
+app.post("/login/:id/:pwd", async (req, res) => {
+
+    // const request = req.body;
+    // console.log(request);
+
+    const {userId, userPwd} = req.body;
+    // console.log(userId, userPwd);
+
+    connection.query(
+        `
+        SELECT count(*) FROM member
+        WHERE id = ? AND pwd = ?
+        `,
+        [userId, userPwd],
+        (err, result, fields) => {
+            if(err){
+                console.log(`에러 : ${err}`);
+            }
+            res.send(result);
+        }
+    );
+});
+
 
 
 
