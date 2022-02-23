@@ -46,6 +46,7 @@ app.post("/member/register", async (req, res) => {
         }
     );
 });
+
 //(로그인)회원 조회 - POST
 app.post("/login/:id/:pwd", async (req, res) => {
 
@@ -57,7 +58,7 @@ app.post("/login/:id/:pwd", async (req, res) => {
 
     connection.query(
         `
-        SELECT count(*) FROM member
+        SELECT * FROM member
         WHERE id = ? AND pwd = ?
         `,
         [userId, userPwd],
