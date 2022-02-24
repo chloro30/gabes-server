@@ -95,6 +95,30 @@ app.post("/login/:id/:pwd", async (req, res) => {
     );
 });
 
+//회원 삭제 - DELETE
+app.delete("/member/:no", async (req, res) => {
+
+    const {no} = req.params;
+    console.log(no);
+
+    connection.query(
+        `
+        DELETE FROM member
+        WHERE no = ${no}
+        `,
+        (err, result, fields) => {
+            res.send(result);
+        }
+    );
+        
+    const SeoulDate = new Date().toLocaleString('ko-KR', {
+        timeZone: 'Asia/Seoul'
+    });
+    console.log(`회원 삭제: ${SeoulDate}`);
+});
+
+
+
 
 //커피 전체 조회 - GET
 app.get('/menu/coffee', async (req, res) => {
