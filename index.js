@@ -118,8 +118,39 @@ app.delete("/member/:no", async (req, res) => {
 });
 
 
+//회원정보 수정 - PUT
+app.put("/member/update", async (req, res) => {
+
+    console.log(req.body);
+
+    res.send('회원정보 수정 서버 응답');
+
+    // const {title, desc} = req.body;
+
+    // console.log(no, title, desc);
+
+    // connection.query(
+    //     `
+    //     UPDATE member
+    //     SET title = ?,
+    //         description = ?
+    //     WHERE no = ?
+    //     `,
+    //     [title, desc, no],
+    //     (err, result, fields) => {
+    //         res.send(result);
+    //         // res.send('1');
+    //     }
+    // );
+        
+    const SeoulDate = new Date().toLocaleString('ko-KR', {
+        timeZone: 'Asia/Seoul'
+    });
+    console.log(`회원정보 수정: ${SeoulDate}`);
+});
 
 
+/* 메뉴 */
 //커피 전체 조회 - GET
 app.get('/menu/coffee', async (req, res) => {
     const SeoulDate = new Date().toLocaleString('ko-KR', {
@@ -290,26 +321,6 @@ app.delete("/board/notice/delete/:no", async (req, res) => {
 });
 
 
-
-
-
-
-
-
-//이벤트 전체 조회 - GET
-app.get('/board/event', async (req, res) => {
-    connection.query(
-        "SELECT * FROM event",
-        (err, rows, fields) => {
-            res.send(rows);
-        }
-    );
-});
-
-//이벤트 등록 - POST
-app.post("/board/event/upload", async (req, res) => {
-    res.send('공지사항이 등록되었습니다.')
-});
 
 
 
