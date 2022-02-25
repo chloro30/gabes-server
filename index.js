@@ -120,28 +120,28 @@ app.delete("/member/:no", async (req, res) => {
 
 //회원정보 수정 - PUT
 app.put("/member/update", async (req, res) => {
+    // res.send('회원정보 수정 서버 응답');
 
     console.log(req.body);
 
-    res.send('회원정보 수정 서버 응답');
+    const {no, pwd, phone, address} = req.body;
 
-    // const {title, desc} = req.body;
-
-    // console.log(no, title, desc);
-
-    // connection.query(
-    //     `
-    //     UPDATE member
-    //     SET title = ?,
-    //         description = ?
-    //     WHERE no = ?
-    //     `,
-    //     [title, desc, no],
-    //     (err, result, fields) => {
-    //         res.send(result);
-    //         // res.send('1');
-    //     }
-    // );
+    connection.query(
+        `
+        UPDATE member
+        SET pwd = ?,
+            phone = ?,
+            address = ?
+        WHERE no = ?
+        `,
+        [pwd, phone, address, no],
+        (err, result, fields) => {
+            if(err){
+                console.log(`에러 : ${err}`);
+            }
+            res.send(result);
+        }
+    );
         
     const SeoulDate = new Date().toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul'
