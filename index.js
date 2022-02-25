@@ -121,7 +121,6 @@ app.delete("/member/:no", async (req, res) => {
 //회원정보 수정 - PUT
 app.put("/member/update", async (req, res) => {
     // res.send('회원정보 수정 서버 응답');
-
     console.log(req.body);
 
     const {no, pwd, phone, address} = req.body;
